@@ -1,0 +1,453 @@
+@import url("https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Root Variables ─────────────────────────────────────────── */
+:root {
+  --gold: #d4af37;
+  --gold-light: #f4e4bc;
+  --obsidian: #0a0a0a;
+  --matte: #1c1c1c;
+  --crimson: #8b0000;
+  --text: #f4f4f4;
+}
+
+/* ── Base ──────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Prevent horizontal overflow without breaking desktop layout */
+  overflow-x: hidden;
+}
+
+body {
+  user-select: none;
+  background-color: var(--obsidian);
+  color: var(--text);
+  font-family: "Inter", sans-serif;
+  overflow-x: hidden;
+  /* Touch optimization */
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+/* Ensure images/videos don't overflow on small screens */
+img, video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ── Typography ────────────────────────────────────────────── */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Syne", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ── Grain Overlay ─────────────────────────────────────────── */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none !important;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  z-index: 9999;
+  user-select: none;
+}
+
+/* ── Glass ─────────────────────────────────────────────────── */
+.glass {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  border-radius: 1rem;
+}
+
+.glass-dark {
+  background: rgba(10, 10, 10, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(212, 175, 55, 0.1);
+}
+
+/* ── Buttons ────────────────────────────────────────────────── */
+button {
+  user-select: none;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+}
+
+/* Ensure mobile menu toggle is always tappable */
+@media (max-width: 767px) {
+  button[aria-label="Toggle menu"] {
+    min-width: 48px;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999 !important;
+    position: relative;
+    pointer-events: all !important;
+  }
+}
+
+.btn-gold {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 10px !important;
+  white-space: nowrap !important;
+  box-sizing: border-box !important;
+  
+  /* Layout ko jamaye rakhne ke liye */
+  flex-shrink: 0 !important;
+  min-height: 44px !important; /* Touch target size */
+  
+  background: linear-gradient(135deg, #d4af37, #f4e4bc);
+  color: #0a0a0a;
+  padding: 0.75rem 1.8rem; /* Side padding thori barhayi hai */
+  border-radius: 9999px;
+  font-family: "Syne", sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  border: none !important; /* Kisi bhi qism ka border khatam */
+  outline: none !important;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* Hover aur Click par size change rokne ke liye ye zaroori hai */
+.btn-gold:hover, 
+.btn-gold:active, 
+.btn-gold:focus {
+  transform: scale(1.02); /* Sirf halka sa zoom, layout change nahi */
+  background: linear-gradient(135deg, #f4e4bc, #d4af37) !important;
+  color: #0a0a0a !important;
+  outline: none !important;
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+}
+
+/* Agar ::after use ho raha hai toh usay bhi fix karna hoga */
+.btn-gold::after {
+  content: none !important; /* Isay temporary disable karke dekhein agar size hil raha hai */
+}
+
+.btn-gold span {
+  position: relative;
+  z-index: 1;
+}
+
+.btn-outline-gold {
+  background: transparent;
+  border: 1px solid #d4af37;
+  color: #d4af37;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-family: "Syne", sans-serif;
+  transition: all 0.3s ease;
+  padding: 0.75rem 1.5rem; /* Restored original feel */
+  display: inline-block;
+}
+
+.btn-outline-gold:hover {
+  background: rgba(212, 175, 55, 0.1);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+}
+
+/* ── Gold Gradient Text ─────────────────────────────────────── */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #d4af37, #f4e4bc, #d4af37);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 4s linear infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 0% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+/* ── Section Divider ────────────────────────────────────────── */
+.gold-divider {
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #d4af37, transparent);
+}
+
+/* ── Custom Scrollbar ───────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+::-webkit-scrollbar-thumb {
+  background: #d4af37;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #f4e4bc;
+}
+
+/* ── Spotify/YouTube Embed ──────────────────────────────────── */
+.embed-container {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+/* ── Photo Card ─────────────────────────────────────────────── */
+.photo-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.photo-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(10, 10, 10, 0.8) 0%,
+    transparent 50%
+  );
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.photo-card:hover::before {
+  opacity: 1;
+}
+
+/* ── Nav Link ───────────────────────────────────────────────── */
+.nav-link {
+  position: relative;
+  font-family: "Syne", sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  transition: color 0.3s ease;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: #d4af37;
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+  width: 100%;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: #d4af37;
+}
+
+/* ── Chatbot ────────────────────────────────────────────────── */
+.chatbot-container {
+  position: fixed !important;
+  bottom: 24px !important;
+  right: 0 !important; 
+  /* IS LINE KO CHECK KAREIN: width 100% nahi honi chahiye */
+  width: auto !important; 
+  height: auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-end !important;
+  z-index: 99999 !important;
+  pointer-events: none !important; /* Ye clicks pass karne dega */
+}
+.chatbot-container > * {
+  pointer-events: auto !important;
+  margin-right: 15px !important; /* Deewar se halka sa gap dene ke liye */
+}
+.chat-message-user {
+  background: linear-gradient(135deg, #d4af37, #c5a030);
+  color: #0a0a0a;
+  border-radius: 18px 18px 4px 18px;
+}
+
+.chat-message-bot {
+  background: rgba(28, 28, 28, 0.95);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  color: #f4f4f4;
+  border-radius: 18px 18px 18px 4px;
+}
+
+/* ── Hover Gold Glow ────────────────────────────────────────── */
+.hover-gold-glow {
+  transition: box-shadow 0.3s ease;
+}
+.hover-gold-glow:hover {
+  box-shadow: 0 0 25px rgba(212, 175, 55, 0.35);
+}
+
+/* ── Fade Up Animation ─────────────────────────────────────── */
+.fade-up {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s ease-out;
+  /* Shuru mein clicks block na hon is liye ye line delete kar dein ya auto rakhein */
+  pointer-events: auto !important; 
+}
+
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Section Header ────────────────────────────────────────── */
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+.section-header h2 {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+/* ── Hero Video Overlay ─────────────────────────────────────── */
+.hero-overlay {
+  background: linear-gradient(
+    to bottom,
+    rgba(10, 10, 10, 0.3) 0%,
+    rgba(10, 10, 10, 0.5) 50%,
+    rgba(10, 10, 10, 0.95) 100%
+  );
+}
+
+/* ── Track Card ─────────────────────────────────────────────── */
+.track-card {
+  background: rgba(28, 28, 28, 0.6);
+  border: 1px solid rgba(212, 175, 55, 0.1);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+.track-card:hover {
+  border-color: rgba(212, 175, 55, 0.4);
+  background: rgba(28, 28, 28, 0.9);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(212, 175, 55, 0.15);
+}
+
+/* ── Social Icon Button ─────────────────────────────────────── */
+.social-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  background: rgba(255, 255, 255, 0.03);
+  color: #d4af37;
+  transition: all 0.3s ease;
+}
+.social-btn:hover {
+  background: rgba(212, 175, 55, 0.15);
+  border-color: #d4af37;
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+  transform: translateY(-2px);
+}
+
+/* ── Input Styles ───────────────────────────────────────────── */
+.input-gold {
+  background: rgba(28, 28, 28, 0.8);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 8px;
+  color: #f4f4f4;
+  padding: 12px 12px 12px 48px !important;
+  width: 100%;
+  font-family: "Inter", sans-serif;
+  transition: border-color 0.3s ease;
+}
+ .input-gold:focus {
+  outline: none;
+  border-color: #d4af37;
+  box-shadow: 0 0 12px rgba(212, 175, 55, 0.2);
+} 
+ /* ── Input Styles FIXED ───────────────────────────────────────────── */
+ /* .input-gold {
+  background: rgba(28, 28, 28, 0.8) !important;
+  border: 1px solid rgba(212, 175, 55, 0.2) !important;
+  border-radius: 8px !important;
+  color: #f4f4f4 !important;
+  /* Icon ke liye jagah banane ke liye ye line sabse zaroori hai */
+  /* padding: 12px 16px 12px 48px !important; 
+  width: 100% !important;
+  font-family: "Inter", sans-serif !important;
+  transition: border-color 0.3s ease !important;
+  display: block !important;
+}*/  
+
+.input-gold:focus {
+  outline: none !important;
+  border-color: #d4af37 !important;
+  box-shadow: 0 0 12px rgba(212, 175, 55, 0.2) !important;
+} 
+.input-gold::placeholder {
+  color: rgba(244, 244, 244, 0.4);
+}
+
+/* ── Stat Card ──────────────────────────────────────────────── */
+.stat-card {
+  text-align: center;
+  padding: 1.5rem;
+  background: rgba(28, 28, 28, 0.4);
+  border: 1px solid rgba(212, 175, 55, 0.1);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+.stat-card:hover {
+  border-color: rgba(212, 175, 55, 0.4);
+  background: rgba(28, 28, 28, 0.7);
+}
+.stat-number {
+  font-family: "Syne", sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #d4af37, #f4e4bc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
