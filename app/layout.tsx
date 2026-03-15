@@ -12,7 +12,11 @@ export const metadata: Metadata = {
   title: "Tony Lenta | Official Website - The King of Romantiqueo",
   description:
     "Official website of Tony Lenta, Puerto Rican reggaeton artist. Stream music, tour dates, booking info. Experience the evolution of Romantiqueo.",
-  keywords: [
+  verification: {
+    google: "1x0JmiX1qHxittXmhhP_G5p3cDhMKk47wcQANHRWT88",
+  },
+  
+    keywords: [
     "Tony Lenta",
     "Reggaeton",
     "Romantiqueo",
