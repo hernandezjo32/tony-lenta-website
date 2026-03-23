@@ -17,7 +17,7 @@ export async function POST(req: Request) {
       secure: false, // Port 587 ke liye false hota hai
       auth: {
         user: "info@tonylenta.com",
-        pass: "YOUR_EMAIL_PASSWORD", // <--- Yahan Tony ki email ka password likhein
+        pass: "Lenta2026@", // <--- Yahan Tony ki email ka password likhein
       },
       tls: {
         // Ye line DKIM aur Certificate errors ko bypass karne mein madad karti hai
