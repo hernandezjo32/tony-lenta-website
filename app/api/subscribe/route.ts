@@ -19,7 +19,7 @@ export async function POST(req: Request) {
         from: 'Lenta Web Alerts <system@tonylenta.com>', 
         to: 'info@tonylenta.com',
         subject: `New ${subject} Inquiry from ${name} 👑`,
-        reply_to: email, // Is se Tony direct fan ko reply kar sakega
+        replyTo: email, // Is se Tony direct fan ko reply kar sakega
         html: `
           <div style="font-family: sans-serif; padding: 20px; border: 1px solid #d4af37;">
             <h2 style="color: #d4af37;">New Contact Message</h2>
