@@ -56,7 +56,7 @@ export async function POST(req: Request) {
     // B. Client ko Notification
     await resend.emails.send({
       // CHANGE 2: Yahan bhi 'notifications@' kar diya
-      from: 'Lenta Web Alerts <notifications@tonylenta.com>', 
+      from: 'Lenta Web Alerts <onboarding@resend.dev>', 
       to: 'info@tonylenta.com',
       subject: 'New Inner Circle Member! 👑',
       html: `<p>A new fan has joined the Lentáticos: <strong>${email}</strong></p>`,
