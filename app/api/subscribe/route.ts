@@ -6,75 +6,67 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { email, name, message, subject, isContactForm } = body;
 
+    // Basic validation
     if (!email) {
       return NextResponse.json({ error: "Email is required" }, { status: 400 });
     }
 
-    // 1. TITAN SMTP - PORT 465 (Most Secure & Recommended)
+    // 1. TITAN SMTP CONFIGURATION (SSL Method)
     const transporter = nodemailer.createTransport({
       host: "smtp.titan.email",
       port: 465,
-      secure: true, // Port 465 ke liye hamesha TRUE hota hai
+      secure: true, // SSL for Port 465
       auth: {
         user: "info@tonylenta.com",
-        pass: "Lenta2026@", // <--- Password ko quotes mein likhein
+        pass: "Lenta2026@", // <--- Tony wala password
       },
-      // Titan ki special security settings
       tls: {
-        rejectUnauthorized: false 
+        rejectUnauthorized: false // Security handshake bypass
       }
     });
 
-    // 2. LOGIC FOR BOTH CASES
+    // 2. PREPARE CONTENT FOR BOTH CASES
     let emailSubject = '';
     let emailHtml = '';
 
     if (isContactForm) {
-      // CASE 1: Contact Form
-      emailSubject = `New Inquiry: ${subject || 'General'} from ${name || 'Fan'}`;
+      // CASE 1: Contact Form Logic
+      emailSubject = `Inquiry: ${subject || 'Contact'} - ${name || 'User'}`;
       emailHtml = `
-        <div style="font-family: sans-serif; padding: 20px; border: 2px solid #d4af37; border-radius: 10px;">
+        <div style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #d4af37;">
           <h2 style="color: #d4af37;">New Website Message</h2>
           <p><strong>Name:</strong> ${name}</p>
           <p><strong>Email:</strong> ${email}</p>
           <p><strong>Subject:</strong> ${subject}</p>
-          <hr style="border: 0.5px solid #eee; margin: 20px 0;" />
-          <p><strong>Message:</strong></p>
-          <p style="background: #f9f9f9; padding: 15px; border-radius: 5px; color: #333;">${message}</p>
+          <p><strong>Message:</strong> ${message}</p>
         </div>
       `;
     } else {
-      // CASE 2: Newsletter (Enter the Circle)
-      emailSubject = 'New Inner Circle Member! 🔥';
+      // CASE 2: Newsletter / Inner Circle Logic
+      emailSubject = 'New Inner Circle Member! 👑';
       emailHtml = `
-        <div style="font-family: sans-serif; padding: 20px; background: #000; color: #fff; text-align: center; border-radius: 10px;">
-          <h2 style="color: #d4af37; letter-spacing: 2px;">NEW FAN ALERT</h2>
-          <p style="font-size: 16px;">Someone just joined the <strong>Lentáticos</strong> family.</p>
-          <p style="background: #d4af37; color: #000; padding: 10px; display: inline-block; border-radius: 5px; font-weight: bold;">
-            ${email}
-          </p>
-          <p style="margin-top: 20px; font-size: 11px; color: #666;">Notification from tonylenta.com</p>
+        <div style="font-family: Arial, sans-serif; padding: 20px; background: #f4f4f4;">
+          <h3>New Fan Joined</h3>
+          <p>A new user has subscribed to the newsletter:</p>
+          <p style="font-size: 18px; font-weight: bold;">${email}</p>
         </div>
       `;
     }
 
     // 3. SEND THE EMAIL
-    // 'from' aur 'to' dono 'info@tonylenta.com' rakhein taake DKIM ka issue hi na aaye
+    // 'from' address ko bilkul plain rakha hai taake DKIM check bypass ho jaye
     await transporter.sendMail({
-      from: '"Lenta Web" <info@tonylenta.com>',
-      to: "info@tonylenta.com",
-      replyTo: email, // Taake Tony direct fan ko reply kar sake
+      from: 'info@tonylenta.com', 
+      to: 'info@tonylenta.com',
+      replyTo: email,
       subject: emailSubject,
       html: emailHtml,
     });
 
-    return NextResponse.json({ success: true, message: "Email Sent Successfully" });
+    return NextResponse.json({ success: true, message: "Sent successfully" });
 
   } catch (error: any) {
     console.error("Titan SMTP Error:", error.message);
-    // User ko clean message dikhayein
-    return NextResponse.json({ 
-      error: "Could not connect to the mail server. Please check your credentials." 
-    }, { status: 500 });
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
