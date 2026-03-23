@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 
-// Direct API Key (Kyunke .env local par read nahi ho rahi thi)
 const resend = new Resend("re_5KjCXyfA_3DDoBbCDT3fMGN2ZjzxwrMz4");
 
 export async function POST(req: Request) {
@@ -13,12 +12,14 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Email is required" }, { status: 400 });
     }
 
-    // --- CASE 1: AGAR YE CONTACT FORM HAI ---
+    // --- CASE 1: CONTACT FORM ---
     if (isContactForm) {
       await resend.emails.send({
-        from: 'Lenta Web <info@tonylenta.com>',
+        // CHANGE 1: Yahan 'system@' kar diya taake info@ par bounce na ho
+        from: 'Lenta Web Alerts <system@tonylenta.com>', 
         to: 'info@tonylenta.com',
         subject: `New ${subject} Inquiry from ${name} 👑`,
+        reply_to: email, // Is se Tony direct fan ko reply kar sakega
         html: `
           <div style="font-family: sans-serif; padding: 20px; border: 1px solid #d4af37;">
             <h2 style="color: #d4af37;">New Contact Message</h2>
@@ -34,9 +35,9 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: true, message: "Contact email sent" });
     }
 
-    // --- CASE 2: AGAR YE NEWSLETTER (INNER CIRCLE) HAI ---
+    // --- CASE 2: NEWSLETTER (INNER CIRCLE) ---
     
-    // A. Fan ko Welcome Email
+    // A. Fan ko Welcome Email (Ye info@ se ja sakti hai kyunke recipient fan hai)
     await resend.emails.send({
       from: 'Tony Lenta <info@tonylenta.com>',
       to: email,
@@ -54,7 +55,8 @@ export async function POST(req: Request) {
 
     // B. Client ko Notification
     await resend.emails.send({
-      from: 'Lenta Web <info@tonylenta.com>',
+      // CHANGE 2: Yahan bhi 'notifications@' kar diya
+      from: 'Lenta Web Alerts <notifications@tonylenta.com>', 
       to: 'info@tonylenta.com',
       subject: 'New Inner Circle Member! 👑',
       html: `<p>A new fan has joined the Lentáticos: <strong>${email}</strong></p>`,
